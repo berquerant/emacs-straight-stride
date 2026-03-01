@@ -4,10 +4,10 @@
 
 (defconst my-straight-profile-path (cdr (assoc straight-current-profile
                                                straight-profiles)))
-(defconst my-straight-repos (concat straight-base-dir "repos/"))
-(defconst my-straight-build (concat straight-base-dir straight-build-dir))
-(defconst my-straight-build-cache-el (concat straight-base-dir "build-cache.el"))
-(defconst my-straight-modified (concat straight-base-dir "modified/"))
+(defconst my-straight-repos (concat straight-base-dir "straight/repos/"))
+(defconst my-straight-build (concat straight-base-dir "straight/" straight-build-dir "/"))
+(defconst my-straight-build-cache-el (concat straight-base-dir "straight/" "build-cache.el"))
+(defconst my-straight-modified (concat straight-base-dir "straight/" "modified/"))
 
 (defun my-straight-read-profile ()
   (with-temp-buffer
@@ -20,7 +20,7 @@
 
 (defun my-straight-list-package-directories ()
   (cl-loop for name in (my-straight-list-packages)
-           collect (format "%s/repos/%s" my-straight-dir-path name)))
+           collect (concat my-straight-repos name)))
 
 (defun my-straight-meta ()
   `(("base_dir" . ,straight-base-dir)
