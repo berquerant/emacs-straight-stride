@@ -32,4 +32,4 @@ func (c *Calculator) Calculate(x *grinfo.Log) (*Log, error) {
 	return y, nil
 }
 
-const DefaultCalculatorFormula = "diff_commit + 3 * diff_tag + 3 * diff_day"
+const DefaultCalculatorFormula = "diff_commit + 3 * diff_tag + 3 * diff_day + 2 * remote_commit_diff_day"

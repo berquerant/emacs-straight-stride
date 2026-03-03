@@ -2,6 +2,8 @@ github.com/berquerant/grinfo v0.5.0 h1:460m7P/Miecp4T0GmiGfh8VKk/MAyCBrD0kRkcT6W
 github.com/berquerant/grinfo v0.5.0/go.mod h1:AJM8Zy/zvlj/v2Gae2m5oRsmlsca9cFqI583ED6nTUE=
 github.com/berquerant/grinfo v0.6.0 h1:ZJwh0oVMrKsPGSf3m/sOMp4yrtCvu3TuLzai3DwfhA8=
 github.com/berquerant/grinfo v0.6.0/go.mod h1:AJM8Zy/zvlj/v2Gae2m5oRsmlsca9cFqI583ED6nTUE=
+github.com/berquerant/grinfo v0.7.0 h1:ORAZGsU8RpgqLiDdj+sMvGn4qKoo7PmAvaj8NCflRCg=
+github.com/berquerant/grinfo v0.7.0/go.mod h1:AJM8Zy/zvlj/v2Gae2m5oRsmlsca9cFqI583ED6nTUE=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/expr-lang/expr v1.17.8 h1:W1loDTT+0PQf5YteHSTpju2qfUfNoBt4yw9+wOEU9VM=
 github.com/expr-lang/expr v1.17.8/go.mod h1:8/vRC7+7HBzESEqt5kKpYXxrxkr31SaO8r40VO/1IT4=

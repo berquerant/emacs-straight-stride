@@ -84,6 +84,7 @@ var scoreCmd = &cobra.Command{
 The following attributes are available for calculating the stale score (float):
 - url (string), repository url
 - dir (string), directory of the local repository
+- basename (string), basename of the directory of the local repository
 - local_commit (string), commit hash of the local repository
 - local_timestamp (int), timestamp of the commit
 - local_date (string), date of the commit
@@ -91,6 +92,8 @@ The following attributes are available for calculating the stale score (float):
 - diff_day (int), time diff between the commit and the latest remote commit
 - diff_commit (int), number of commits between the commit and the latest remote commit
 - diff_tag (int), number of tags between the commit and the latest remote commit
+- remote_commit_diff_day (int), time diff between the latest remote commit and now
+- remote_tag_diff_day (int, optional), time diff between the latest tag and now; 0 if not exists
 
 Further attributes available for log filtering:
 - score (float)`,
