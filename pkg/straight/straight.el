@@ -41,8 +41,9 @@
 (defun my-straight-build-all ()
   (straight-rebuild-all))
 
-(defun my-straight-update-package (pkg)
-  (straight-pull-package-and-deps pkg)
+(defun my-straight-update-packages (pkgs)
+  (cl-loop for pkg in pkgs
+           do (straight-pull-package-and-deps pkg))
   (my-straight-build-all))
 
 (defun my-straight-update-all ()
@@ -62,6 +63,6 @@
 (defun my-straight-rollback ()
   (straight-thaw-versions))
 
-(defun my-straight-update (&optional pkg)
-  (if pkg (straight-pull-package-and-deps pkg)
+(defun my-straight-update (pkgs)
+  (if pkgs (my-straight-update-packages pkgs)
     (straight-pull-all)))

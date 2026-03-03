@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	"github.com/berquerant/emacs-straight-stride/pkg/emacs"
 	"github.com/berquerant/emacs-straight-stride/pkg/temp"
@@ -79,15 +80,19 @@ func (c *Client) ReadInfo(ctx context.Context) (*Info, error) {
 	return &x, nil
 }
 
-func (c *Client) Update(ctx context.Context, pkg string) error {
+func (c *Client) Update(ctx context.Context, pkgs ...string) error {
 	e := ""
-	if pkg == "" {
-		e = "(my-straight-update)"
+	if len(pkgs) == 0 {
+		e = "(my-straight-update nil)"
 	} else {
-		e = fmt.Sprintf(`(my-straight-update "%s")`, pkg)
+		xs := make([]string, len(pkgs))
+		for i, p := range pkgs {
+			xs[i] = fmt.Sprintf(`"%s"`, p)
+		}
+		e = fmt.Sprintf(`(my-straight-update '(%s))`, strings.Join(xs, " "))
 	}
 	if err := c.run(ctx, e); err != nil {
-		return fmt.Errorf("%w: failed to update %s", err, pkg)
+		return fmt.Errorf("%w: failed to update %v", err, pkgs)
 	}
 	return nil
 }

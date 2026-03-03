@@ -9,21 +9,21 @@ import (
 func init() {
 	rootCmd.AddCommand(updateCmd)
 	updateCmd.Flags().Bool("all", false, "update all packages")
-	updateCmd.Flags().BoolP("commit", "c", false, "update package and commit")
+	updateCmd.Flags().BoolP("commit", "c", false, "update packages and commit")
 }
 
 var updateCmd = &cobra.Command{
-	Use:   "update [PACKAGE]",
-	Short: `Update package`,
+	Use:   "update [PACKAGE...]",
+	Short: `Update packages`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		all, _ := cmd.Flags().GetBool("all")
 		if !all && len(args) == 0 {
 			return errors.New("--all or PACKAGE is required")
 		}
 
-		pkg := ""
+		pkgs := []string{}
 		if !all {
-			pkg = args[0]
+			pkgs = args
 		}
 		s, err := newStraight(cmd)
 		if err != nil {
@@ -31,7 +31,7 @@ var updateCmd = &cobra.Command{
 		}
 		defer s.Close()
 
-		if err := s.Update(cmd.Context(), pkg); err != nil {
+		if err := s.Update(cmd.Context(), pkgs...); err != nil {
 			return err
 		}
 		if commit, _ := cmd.Flags().GetBool("commit"); commit {
