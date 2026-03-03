@@ -9,6 +9,7 @@ import (
 func init() {
 	rootCmd.AddCommand(updateCmd)
 	updateCmd.Flags().Bool("all", false, "update all packages")
+	updateCmd.Flags().BoolP("commit", "c", false, "update package and commit")
 }
 
 var updateCmd = &cobra.Command{
@@ -30,6 +31,12 @@ var updateCmd = &cobra.Command{
 		}
 		defer s.Close()
 
-		return s.Update(cmd.Context(), pkg)
+		if err := s.Update(cmd.Context(), pkg); err != nil {
+			return err
+		}
+		if commit, _ := cmd.Flags().GetBool("commit"); commit {
+			return s.Commit(cmd.Context())
+		}
+		return nil
 	},
 }
