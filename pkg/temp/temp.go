@@ -29,6 +29,8 @@ func (d *Dir) Close() error {
 	return nil
 }
 
+func (d *Dir) Path() string { return d.path }
+
 func (d *Dir) Join(path string) string {
 	x := filepath.Join(d.path, path)
 	slog.Debug("TempDir: Join", slog.String("path", x))

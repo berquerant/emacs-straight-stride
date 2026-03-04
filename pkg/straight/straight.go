@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -120,14 +121,27 @@ func (c *Client) PruneCache(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("%w: failed to prune cache", err)
 	}
-	if err := os.Rename(info.Meta.BuildDir, d.Join("build")); err != nil {
-		return fmt.Errorf("%w: failed to prune cache", err)
-	}
-	if err := os.Rename(info.Meta.BuildCache, d.Join("build-cache.el")); err != nil {
-		return fmt.Errorf("%w: failed to prune cache", err)
-	}
-	if err := os.Rename(info.Meta.ModifiedDir, d.Join("modified")); err != nil {
-		return fmt.Errorf("%w: failed to prune cache", err)
+	for _, x := range []struct {
+		src  string
+		dest string
+	}{
+		{
+			src:  info.Meta.BuildDir,
+			dest: d.Join("build"),
+		},
+		{
+			src:  info.Meta.BuildCache,
+			dest: d.Join("build-cache.el"),
+		},
+		{
+			src:  info.Meta.ModifiedDir,
+			dest: d.Join("modified"),
+		},
+	} {
+		slog.Info("PruneCache", slog.String("src", x.src), slog.String("dest", x.dest))
+		if err := os.Rename(x.src, x.dest); err != nil {
+			return fmt.Errorf("%w: failed to prune cache", err)
+		}
 	}
 	return nil
 }
@@ -143,6 +157,7 @@ func (c *Client) PruneRepo(ctx context.Context, pattern string) error {
 	}
 
 	if pattern == "" {
+		slog.Info("PruneRepo", slog.String("src", info.Meta.RepoDir), slog.String("dest", d.Join("repos")))
 		if err := os.Rename(info.Meta.RepoDir, d.Join("repos")); err != nil {
 			return fmt.Errorf("%w: failed to prune repo, pattern = %s, dir = %s", err, pattern, info.Meta.RepoDir)
 		}
@@ -156,6 +171,7 @@ func (c *Client) PruneRepo(ctx context.Context, pattern string) error {
 	for _, x := range info.Directories {
 		b := filepath.Base(x)
 		if r.MatchString(b) {
+			slog.Info("PruneRepo", slog.String("src", x), slog.String("dest", d.Join(b)))
 			if err := os.Rename(x, d.Join(b)); err != nil {
 				return fmt.Errorf("%w: failed to prune repo, pattern = %s, dir = %s", err, pattern, x)
 			}
