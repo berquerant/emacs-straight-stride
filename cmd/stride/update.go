@@ -10,6 +10,7 @@ func init() {
 	rootCmd.AddCommand(updateCmd)
 	updateCmd.Flags().Bool("all", false, "update all packages")
 	updateCmd.Flags().BoolP("commit", "c", false, "update packages and commit")
+	updateCmd.Flags().BoolP("exec", "x", false, "invoke Emacs after updating")
 }
 
 var updateCmd = &cobra.Command{
@@ -36,6 +37,13 @@ var updateCmd = &cobra.Command{
 		}
 		if commit, _ := cmd.Flags().GetBool("commit"); commit {
 			return s.Commit(cmd.Context())
+		}
+		if invoke, _ := cmd.Flags().GetBool("exec"); invoke {
+			e, err := newEmacsClient(cmd)
+			if err != nil {
+				return err
+			}
+			return e.Exec(cmd.Context())
 		}
 		return nil
 	},

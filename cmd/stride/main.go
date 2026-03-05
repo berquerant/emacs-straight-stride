@@ -2,11 +2,14 @@ package main
 
 import (
 	"context"
+	"errors"
 	"os"
+	"path/filepath"
 
 	"github.com/berquerant/emacs-straight-stride/pkg/emacs"
 	"github.com/berquerant/emacs-straight-stride/pkg/logx"
 	"github.com/spf13/cobra"
+	"mvdan.cc/sh/v3/shell"
 )
 
 var rootCmd = &cobra.Command{
@@ -24,14 +27,30 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.PersistentFlags().Bool("debug", false, "enable debug log")
-	rootCmd.PersistentFlags().StringP("emacs", "e", "emacs", "emacs binary")
-	rootCmd.PersistentFlags().StringP("init", "i", os.Getenv("EMACSD"), "init directory; default: $EMACSD")
+	rootCmd.PersistentFlags().StringP("emacs", "e", "emacs", "emacs command")
+	rootCmd.PersistentFlags().StringP("init-el", "i", "", "init.el; default: $EMACSD/init.el")
+	rootCmd.PersistentFlags().StringP("emacsd", "d", "", "override $EMACSD")
 }
 
-func newEmacsClient(cmd *cobra.Command) *emacs.Client {
-	bin, _ := cmd.Flags().GetString("emacs")
-	initDir, _ := cmd.Flags().GetString("init")
-	return emacs.NewClient(bin, initDir)
+func defaultEmacsd(cmd *cobra.Command) string {
+	if emacsd, _ := cmd.Flags().GetString("emacsd"); emacsd != "" {
+		return emacsd
+	}
+	return os.Getenv("EMACSD")
+}
+
+func newEmacsClient(cmd *cobra.Command) (*emacs.Client, error) {
+	command, _ := cmd.Flags().GetString("emacs")
+	args, err := shell.Fields(command, os.Getenv)
+	if err != nil {
+		return nil, err
+	}
+	if len(args) == 0 {
+		return nil, errors.New("no emacs command")
+	}
+	emacsd := defaultEmacsd(cmd)
+	args = append(args, "--init-directory", emacsd, "--load", filepath.Join(emacsd, "init.el"))
+	return emacs.NewClient(args[0], args[1:]...), nil
 }
 
 func main() {

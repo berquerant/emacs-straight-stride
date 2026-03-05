@@ -14,7 +14,10 @@ func init() {
 }
 
 func newStraight(cmd *cobra.Command) (*straight.Client, error) {
-	e := newEmacsClient(cmd)
+	e, err := newEmacsClient(cmd)
+	if err != nil {
+		return nil, err
+	}
 	return straight.NewClient(e)
 }
 
