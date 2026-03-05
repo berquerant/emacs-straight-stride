@@ -17,13 +17,14 @@ Available Commands:
   prune       Prune resources
   rollback    Rollback package versions
   score       Display stale score
-  update      Update package
+  update      Update packages
 
 Flags:
-      --debug          enable debug log
-  -e, --emacs string   emacs binary (default "emacs")
-  -h, --help           help for stride
-  -i, --init string    init directory; default: $EMACSD
+      --debug            enable debug log
+  -e, --emacs string     emacs command (default "emacs")
+  -d, --emacsd string    override $EMACSD
+  -h, --help             help for stride
+  -i, --init-el string   init.el; default: $EMACSD/init.el
 
 Use "stride [command] --help" for more information about a command.
 ```
