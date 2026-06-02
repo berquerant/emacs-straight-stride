@@ -24,3 +24,7 @@ vuln:
 .PHONY: vet
 vet:
 	go vet ./...
+
+.PHONY: fix
+fix:
+	go fix ./...
