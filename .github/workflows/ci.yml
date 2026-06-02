@@ -10,8 +10,13 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
+    name: Build
     timeout-minutes: 5
     permissions:
       contents: read
@@ -29,6 +34,8 @@ jobs:
           cache-dependency-path: go.sum
       - name: Test
         run: make test
+      - name: Fix
+        run: make fix
       - name: Lint
         run: make vet
       - name: Vuln
