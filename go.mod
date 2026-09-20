@@ -6,7 +6,7 @@ require (
 	github.com/berquerant/grinfo v0.7.1
 	github.com/expr-lang/expr v1.17.8
 	github.com/spf13/cobra v1.10.2
-	mvdan.cc/sh/v3 v3.14.0
+	mvdan.cc/sh/v3 v3.14.1
 )
 
 require (
