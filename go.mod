@@ -1,6 +1,6 @@
 module github.com/berquerant/emacs-straight-stride
 
-go 1.26.2
+go 1.27.3
 
 require (
 	github.com/berquerant/grinfo v0.7.1
