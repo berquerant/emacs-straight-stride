@@ -3,7 +3,7 @@ module github.com/berquerant/emacs-straight-stride
 go 1.27.3
 
 require (
-	github.com/berquerant/grinfo v0.7.1
+	github.com/berquerant/grinfo v0.8.0
 	github.com/expr-lang/expr v1.17.8
 	github.com/spf13/cobra v1.10.2
 	mvdan.cc/sh/v3 v3.14.1
